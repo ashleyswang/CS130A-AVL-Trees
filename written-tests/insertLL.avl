@@ -1,0 +1,9 @@
+# This is a comment 
+insert 1
+print tree
+
+insert 0
+print tree
+
+insert -1
+print tree

@@ -16,3 +16,9 @@ clean:
 
 test: avl
 	@bash test.sh
+
+tester: avl
+	@bash written-test.sh
+
+insert: avl
+	./avl written-tests/insert.avl

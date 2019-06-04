@@ -1,15 +1,17 @@
 #ifndef TREE_H
 #define TREE_H
 
-public class Tree{
+#include "Node.h"
+
+class Tree{
 
 	public: 
 		// Constructor and Destructor
 		Tree();
 		~Tree();
 
-		Node* insert(int key, int &visits, int &rotations);
-		Node* lookup(int key, int &visits, int& rotations);
+		bool insert(int key, int &visits, int &rotations);
+		bool lookup(int key, int &visits);
 		void print();
 
 	private:
@@ -20,10 +22,13 @@ public class Tree{
 		void balanceTree(Node* n, int &rotations);
 		void rotateLeft(Node* n);
 		void rotateRight(Node* n);
+		// void rotateHeightAdjustment(Node* n);
 
+		// Print helper function
+		void printTree(Node* n, int indentCounter);
+		
 		Node* root;
-
-
+		
 };
 
 #endif

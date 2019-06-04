@@ -1,4 +1,8 @@
 #include "Tree.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
 
 Tree::Tree(){
 	root = nullptr;
@@ -16,88 +20,90 @@ void Tree::ClearTree(Node* n){
 	}
 }
 
-bool Tree::lookup(int key, int &visits, int &rotations){	
+bool Tree::lookup(int key, int &visits){	
 	// check for empty tree
 	if(root == nullptr){
 		return false;
 	} else {
 		Node* currentNode = root;
-		while(currentNode->getKey() != key || currentNode != nullptr){
+		while(currentNode != nullptr && currentNode->getKey() != key){
 			if (key > currentNode->getKey()){
 				currentNode = currentNode->getRight();
 				visits++;
 			}
-			if (key < currentNode->getKey()){
+			else if (key < currentNode->getKey()){
 				currentNode = currentNode->getLeft();
 				visits++;
 			}
 		}
-		if(currentNode != nullptr){
-			return true;
-		} else {
+		if(currentNode == nullptr){
 			return false;
+		}
+		else{
+			return true;
 		}
 	}
 }
 
-void Tree::insert(int key, int &visits, int &rotations){
-	int tempVisits = visits;
-	int tempRotations = rotations;
-	// if node does not exists return out
-	if(this->lookup(key, visits, rotations)){
-		return;
-	} 
-	// else insert node
-	else {
-		// reset visits and rotations to original values
-		visits = tempVisits;
-		rotations = tempRotations;
-		Node* newNode = new Node(key);
-		Node* currentNode = root;
-		Node* unbalanced = nullptr;
-		// check for empty tree
-		if(root == nullptr){
-			root = newNode;
-		} else {
-			while(currentNode != nullptr){
-				currentNode->increaseHeight();
-				
-				// key is less than currentNode key
-				if(key < currentNode->getKey()){
-					// if there is a left child on current node
-					if(currentNode->getLeft() != nullptr){
-						currentNode = currentNode->getLeft();
-					} 
-					// if there is no left child
-					// make current node parent of new node
-					else {
-						currentNode->setLeft(newNode);
-						newNode->setParent(currentNode);
-						break;
-					}
-				}
+bool Tree::insert(int key, int &visits, int &rotations){
+	// reset visits and rotations to original values
+	Node* newNode = new Node(key);
+	Node* currentNode = root;
+	
+	// check for empty tree
+	if(root == nullptr){
+		root = newNode;
+		visits = 0;
+	}
+	while(currentNode != nullptr){
+		visits++;
 
-				// key is greater than currentNode key
-				if(key > currentNode->getKey()){
-					// if there is a right child on current node
-					if(currentNode->getRight() != nullptr){
-						currentNode = currentNode-> getRight();
-					}
-					// if there is no left child
-					// make current node parent of new node
-					else{ 
-						currentNode->setRight(newNode);
-						newNode->setParent(currentNode);
-						break;
-					}
-				}
-
+		// key is less than currentNode key
+		if(key < currentNode->getKey()){
+			// if there is a left child on current node
+			if(currentNode->getLeft() != nullptr){
+				currentNode = currentNode->getLeft();
+				continue;
+			} 
+			// if there is no left child
+			// make current node parent of new node
+			else {
+				currentNode->setLeft(newNode);
+				newNode->setParent(currentNode);
+				break;
 			}
 		}
-		// start balance at newNode's grandparent since parent cannot
-		// be unbalanced since it has either 1 or 2 children 
-		// (at most difference of 1)
-		balanceTree(newNode->getParent()->getParent(), rotations);
+
+		// key is greater than currentNode key
+		else if(key > currentNode->getKey()){
+			// if there is a right child on current node
+			if(currentNode->getRight() != nullptr){
+				currentNode = currentNode-> getRight();
+				continue;
+			}
+			// if there is no left child
+			// make current node parent of new node
+			else{ 
+				currentNode->setRight(newNode);
+				newNode->setParent(currentNode);
+				break;
+			}
+		}
+		// key is already in tree
+		else{
+			return false;
+		}
+	}
+	currentNode = newNode;
+	while(true){
+		balanceTree(currentNode, rotations);
+		currentNode->setHeight();
+		if(currentNode->getParent() == nullptr){
+			root = currentNode;
+			return true;
+		} else {
+			currentNode = currentNode->getParent();
+		}
 	}
 }
 
@@ -108,30 +114,31 @@ void Tree::balanceTree(Node* n, int &rotations){
 		if (n->getRight()->balance() > 0){
 			rotateLeft(n);
 			rotations++;
+			return;
 		}
 		// right-left: right-left rotation
-		if (n->getRight()->balance() < 0){
+		else{
 			rotateRight(n->getRight());
 			rotateLeft(n);
 			rotations+=2;
+			return;
 		}
 	} 
 	// left side longer than right side
-	else if (n->balance() < 1){
+	else if (n->balance() < -1){
 		// left-left: single right rotation
 		if (n->getLeft()->balance() < 0){
 			rotateRight(n);
 			rotations++;
+			return;
 		}
 		// left-right: left-right rotation 
-		if (n->getLeft()->balance() > 0){
+		else{
 			rotateLeft(n->getLeft());
 			rotateRight(n);
 			rotations+=2;
+			return;
 		}
-	}
-	if(n->getParent() != nullptr){
-		balanceTree(n->getParent);
 	}
 }
 
@@ -141,8 +148,20 @@ void Tree::rotateLeft(Node* n){
 
 	oldPivot->setRight(newPivot->getLeft());
 	newPivot->setLeft(oldPivot);
-	newPivot->setParent(oldPivot->getParent())
+	newPivot->setParent(oldPivot->getParent());
 	oldPivot->setParent(newPivot);
+	
+	if(newPivot->getParent() != nullptr){
+		if(newPivot->getParent()->getLeft() == oldPivot){
+			newPivot->getParent()->setLeft(newPivot);
+		} 
+		if(newPivot->getParent()->getRight() == oldPivot){
+			newPivot->getParent()->setRight(newPivot);
+		}
+	}
+
+	oldPivot->setHeight();
+	newPivot->setHeight();
 }
 
 void Tree::rotateRight(Node* n){
@@ -151,10 +170,63 @@ void Tree::rotateRight(Node* n){
 
 	oldPivot->setLeft(newPivot->getRight());
 	newPivot->setRight(oldPivot);
-	newPivot->setParent(oldPivot->getParent())
+	newPivot->setParent(oldPivot->getParent());
 	oldPivot->setParent(newPivot);
+
+	if(newPivot->getParent() != nullptr){
+		if(newPivot->getParent()->getLeft() == oldPivot){
+			newPivot->getParent()->setLeft(newPivot);
+		} 
+		if(newPivot->getParent()->getRight() == oldPivot){
+			newPivot->getParent()->setRight(newPivot);
+		}
+	}
+
+	oldPivot->setHeight();
+	newPivot->setHeight();
 }
 
-void Tree::print(){
+// void Tree::rotateHeightAdjustment(Node* n){
+	
+// 	if(n->getLeft() != nullptr){
+// 		n->getLeft()->setHeight();
+// 	}
+// 	if(n->getRight() != nullptr){
+// 		n->getRight()->setHeight();
+// 	}
 
+// 	Node* currentNode = n;
+// 	while(currentNode != nullptr){
+// 		currentNode->setHeight();
+		
+// 		if(currentNode->getParent() != nullptr){
+// 			currentNode = currentNode->getParent();
+// 		} else {
+// 			root = currentNode;
+// 			break;
+// 		}
+// 	}
+
+// }
+
+void Tree::print(){
+	printTree(root, 0);
+}
+
+void Tree::printTree(Node* n, int indentCounter){
+	std::string indents = "";
+	for(int i=0; i<indentCounter; i++){
+		indents+="  ";
+	}
+
+	if(n == nullptr){
+		std::cout << indents << "Null" << std::endl;
+	} else if (n->getHeight() == 0){
+		std::cout << indents << "Leaf(" << n->getKey() << ")" << std::endl;
+	} else {
+		std::cout << indents << "Node(" << n->getKey() << ", h=" << n->getHeight() 
+			<< "):" << std::endl;
+		printTree(n->getLeft(), indentCounter+1);
+		printTree(n->getRight(), indentCounter+1);
+	}
 }

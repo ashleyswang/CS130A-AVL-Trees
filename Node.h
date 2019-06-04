@@ -1,12 +1,11 @@
 #ifndef NODE_H
 #define NODE_H
 
-public class Node{
+#include <algorithm>
+
+class Node{
 
 	public: 
-		
-		int visits=0;
-		int rotations=0;
 
 		// Constructors
 		Node(int key){
@@ -14,6 +13,7 @@ public class Node{
 			parent = nullptr;
 			leftChild = nullptr;
 			rightChild = nullptr;
+			height = 0;
 		};
 
 		// Accessors
@@ -21,15 +21,21 @@ public class Node{
 		Node* getParent(){ return parent; };
 		Node* getLeft(){ return leftChild; };
 		Node* getRight(){ return rightChild; };
-		int getHeight(){ 
-			if (this == nullptr){
-				return -1;
-			} else {
-				return height; 
-			}
-		};
+		int getHeight(){ return height; };
 		int balance(){
-			return rightChild->getHeight() - leftChild->getHeight();
+			int leftHeight;
+			int rightHeight;
+
+			if(leftChild == nullptr)
+				leftHeight = -1;
+			if(leftChild != nullptr)
+				leftHeight = leftChild->getHeight();
+			if(rightChild == nullptr)
+				rightHeight = -1;
+			if(rightChild != nullptr)
+				rightHeight = rightChild->getHeight();
+
+			return rightHeight - leftHeight;
 		};
 
 		// Modifier
@@ -38,7 +44,21 @@ public class Node{
 		void setLeft(Node* leftChild){ this->leftChild = leftChild; };
 		void setRight(Node* rightChild){ this-> rightChild = rightChild; };
 		void increaseHeight(){ height++; };
-		void decreaseHeight(){ height--; };
+		void setHeight(){ 
+			int leftHeight;
+			int rightHeight;
+
+			if(leftChild == nullptr)
+				leftHeight = -1;
+			if(leftChild != nullptr)
+				leftHeight = leftChild->getHeight();
+			if(rightChild == nullptr)
+				rightHeight = -1;
+			if(rightChild != nullptr)
+				rightHeight = rightChild->getHeight();
+
+			this->height = std::max(leftHeight+1, rightHeight+1);
+		};
 		void setHeight(int height){ this->height = height; };
 
 
