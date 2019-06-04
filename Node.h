@@ -16,6 +16,11 @@ class Node{
 			height = 0;
 		};
 
+		~Node(){
+			delete leftChild;
+			delete rightChild;
+		};
+
 		// Accessors
 		int getKey(){ return key; };
 		Node* getParent(){ return parent; };

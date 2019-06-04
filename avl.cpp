@@ -1,6 +1,7 @@
 #include "Tree.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -26,9 +27,27 @@ void printInsert(vector<int>* v, Tree* t){
 		<< (double(rotations)/size) << ") rotations." << endl << endl;
 }
 
-// void printLookup(vector<int> v, Tree* t){
-// 	// something here
-// }
+void printLookup(vector<int>* v, Tree* t){
+	int visits=0;
+	int success=0;
+	int size=v->size();
+	string found = "";
+
+	for(int i=0; i<size; i++){
+
+		if(t->lookup(v->at(i), visits)){
+			if(found != ""){
+				found += ", ";
+			}
+			success++;
+			found += to_string(v->at(i));
+		}
+	}
+
+	cout << "Found " << success << " of " << size << " nodes: [" << found << "]"<< endl;
+	cout << "Visited " << visits << " (" << (double(visits)/size)
+		<< ") nodes and performed 0 (0) rotations." << endl << endl;
+}
 
 int main(int argc, char *argv[]){
 
@@ -36,65 +55,40 @@ int main(int argc, char *argv[]){
 	ifstream ifs; 
 	ifs.open(argv[1]); 
 
+	string line;
 	string input;
 	Tree* t = new Tree();
 
-	while (1){
-		// get first user command
-		getline(ifs, input, ' '); 
-		if(ifs.eof()){
-			break;
+	while (getline(ifs, line)) {
+		if(line == "" || line[0] == '#') {
+			continue;
 		}
-		if(input == "#"){
-			// set getline cursor to end of this line
-			getline(ifs, input);
-		} else if(input == "insert"){
-			string insertNums;
-			getline(ifs, insertNums); 
+		// get first user command
 
-			vector<int>* v = new vector<int>();
-			string temp = "";
-
-			for(char c : insertNums){
-				// if character is a space
-				if (int(c) == 32){
-					v->push_back(stoi(temp));
-					// cout << "** PUSHBACK " << temp << " **" << endl;
-					temp="";
-				} 
-				// assume it's a number
-				else {
-					temp+=c;
-				} 
+		istringstream iss(line);
+		iss >> input;
+		 
+		//cout << input << endl;
+		if(input == "insert"){
+			int value;
+			vector<int> v;
+			while(iss >> value) {
+				v.push_back(value);
 			}
-			v->push_back(stoi(temp));
-			// cout << "** PUSHBACK " << temp << " **" << endl;
-			printInsert(v, t);
-			delete v;
 
-		// } else if(input == "lookup"){
-		// 	string lookupNums;
-		// 	getline(ifs, lookupNums); 
+			printInsert(&v, t);
 
-		// 	vector<int> v = new vector<int>();
-		// 	string temp = "";
+		} else if(input == "lookup"){
+			int value;
+			vector<int> v;
+			while(iss >> value) {
+				v.push_back(value);
+			}
 
-		// 	for(char c : lookupNums){
-		// 		// if character is a space
-		// 		if (int(c) == 32){
-		// 			v.push_back(stoi(temp));
-		// 			temp="";
-		// 		} 
-		// 		// assume it's a number
-		// 		else {
-		// 			temp+=c;
-		// 		} 
-		// 	}
-		// 	printLookup(v, t);
-		// 	delete v;
+			printLookup(&v, t);
 
 		} else if(input == "print"){
-			getline(ifs, input);
+			iss >> input;
 			if(input == "tree"){
 				t->print();
 				cout << endl;
@@ -111,7 +105,6 @@ int main(int argc, char *argv[]){
 			else if(input == "right-right"){
 				// some function
 			}
-			getline(ifs, input);
 		}
 
 	}

@@ -1,0 +1,18 @@
+Added 10 of 10 nodes.
+Visited 20 (2) nodes and performed 0 (0) rotations.
+
+Node(2, h=3):
+  Node(0, h=1):
+    Leaf(-5)
+    Null
+  Node(9, h=2):
+    Node(6, h=1):
+      Leaf(3)
+      Leaf(8)
+    Node(11, h=1):
+      Leaf(10)
+      Leaf(12)
+
+Found 5 of 6 nodes: [2, 0, 9, -5, 6]
+Visited 15 (2.5) nodes and performed 0 (0) rotations.
+

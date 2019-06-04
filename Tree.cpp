@@ -9,53 +9,46 @@ Tree::Tree(){
 }
 
 Tree::~Tree(){
-	ClearTree(root);
+	delete root;
 }
 
-void Tree::ClearTree(Node* n){
-	if(n != nullptr){
-		ClearTree(n->getLeft());
-		ClearTree(n->getRight());
-		delete n;
-	}
-}
+// void Tree::ClearTree(Node* n){
+// 	if(n != nullptr){
+// 		ClearTree(n->getLeft());
+// 		ClearTree(n->getRight());
+// 		delete n;
+// 	}
+// }
 
 bool Tree::lookup(int key, int &visits){	
-	// check for empty tree
-	if(root == nullptr){
-		return false;
-	} else {
-		Node* currentNode = root;
-		while(currentNode != nullptr && currentNode->getKey() != key){
-			if (key > currentNode->getKey()){
-				currentNode = currentNode->getRight();
-				visits++;
-			}
-			else if (key < currentNode->getKey()){
-				currentNode = currentNode->getLeft();
-				visits++;
-			}
+	Node* currentNode = root;
+	while(currentNode != nullptr){
+	 	visits++;
+
+		if (key > currentNode->getKey()){
+			currentNode = currentNode->getRight();
 		}
-		if(currentNode == nullptr){
-			return false;
+		else if (key < currentNode->getKey()){
+			currentNode = currentNode->getLeft();
 		}
 		else{
 			return true;
 		}
 	}
+	return false;
 }
 
 bool Tree::insert(int key, int &visits, int &rotations){
 	// reset visits and rotations to original values
-	Node* newNode = new Node(key);
 	Node* currentNode = root;
+	Node* newNode = nullptr;
 	
 	// check for empty tree
 	if(root == nullptr){
-		root = newNode;
-		visits = 0;
+		root = new Node(key);
+		return true;
 	}
-	while(currentNode != nullptr){
+	while(true){
 		visits++;
 
 		// key is less than currentNode key
@@ -63,11 +56,11 @@ bool Tree::insert(int key, int &visits, int &rotations){
 			// if there is a left child on current node
 			if(currentNode->getLeft() != nullptr){
 				currentNode = currentNode->getLeft();
-				continue;
 			} 
 			// if there is no left child
 			// make current node parent of new node
 			else {
+				newNode = new Node(key);
 				currentNode->setLeft(newNode);
 				newNode->setParent(currentNode);
 				break;
@@ -79,11 +72,11 @@ bool Tree::insert(int key, int &visits, int &rotations){
 			// if there is a right child on current node
 			if(currentNode->getRight() != nullptr){
 				currentNode = currentNode-> getRight();
-				continue;
 			}
 			// if there is no left child
 			// make current node parent of new node
 			else{ 
+				newNode = new Node(key);
 				currentNode->setRight(newNode);
 				newNode->setParent(currentNode);
 				break;
@@ -94,6 +87,7 @@ bool Tree::insert(int key, int &visits, int &rotations){
 			return false;
 		}
 	}
+
 	currentNode = newNode;
 	while(true){
 		balanceTree(currentNode, rotations);
@@ -151,6 +145,9 @@ void Tree::rotateLeft(Node* n){
 	newPivot->setParent(oldPivot->getParent());
 	oldPivot->setParent(newPivot);
 	
+	if(oldPivot->getRight() != nullptr){
+		oldPivot->getRight()->setParent(oldPivot);
+	}
 	if(newPivot->getParent() != nullptr){
 		if(newPivot->getParent()->getLeft() == oldPivot){
 			newPivot->getParent()->setLeft(newPivot);
@@ -173,6 +170,9 @@ void Tree::rotateRight(Node* n){
 	newPivot->setParent(oldPivot->getParent());
 	oldPivot->setParent(newPivot);
 
+	if(oldPivot->getLeft() != nullptr){
+		oldPivot->getLeft()->setParent(oldPivot);
+	}
 	if(newPivot->getParent() != nullptr){
 		if(newPivot->getParent()->getLeft() == oldPivot){
 			newPivot->getParent()->setLeft(newPivot);
