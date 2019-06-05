@@ -109,7 +109,7 @@ int rotateType(pair<Node*, Node*> nodePair){
 		}
 		// leaf node is on right side of unbalanced node 
 		else {
-			if(leaf->getKey() > unbalanced->getLeft()->getKey())
+			if(leaf->getKey() > unbalanced->getRight()->getKey())
 				return 3;
 			else
 				return 7;
@@ -117,7 +117,50 @@ int rotateType(pair<Node*, Node*> nodePair){
 	}
 }
 
-string getRotateRange(int r, Node* leaf, Tree* t){
+string printRange(int min, int max, int key){
+
+	if(min > max){
+		return "";
+	} else if(min == max){
+		if(min != key){
+			return to_string(min);
+		} else {
+			return "";
+		}
+	} else {
+		if(min <= key && max >= key){
+			if(min == key){
+				min++;
+				return printRange(min, max, key);
+			} else if (max == key){
+				max--;
+				return printRange(min, max, key);
+			} else {
+				// leaf is in between the two ranges
+				int subMax = key-1;
+				int subMin = key+1;
+				
+				string range1 = printRange(min, subMax, key);
+				string range2 = printRange(subMin, max, key);
+
+				if(range1 == "" && range2 == ""){
+					return range1;
+				}else if (range1 == "" && range2 != ""){
+					return range2;
+				}else if (range1 != "" && range2 == ""){
+					return range1;
+				}else{
+					return (range1 + ", " + range2);
+				}
+			}
+		}
+		else{
+			return (to_string(min) + " to " + to_string(max));
+		}
+	}
+}
+
+string getRotateRange(int r, Node* leaf, Node* unbalanced, Tree* t){
 	int min = -2147483648;
 	int max = 2147483647;
 
@@ -134,31 +177,28 @@ string getRotateRange(int r, Node* leaf, Tree* t){
 			currentNode = currentNode->getLeft();
 		}
 		else{
-			// at leaf, end with left
-			if(r == 2 || r == 7){
-				max = currentNode->getKey()-1;
-				break;
+			if (unbalanced == leaf->getParent()){
+				// at leaf, end with left
+				if(r == 2 || r == 7){
+					max = currentNode->getKey()-1;
+					break;
+				} else {
+					min = currentNode->getKey()+1;
+					break;
+				}
 			} else {
-				min = currentNode->getKey()+1;
 				break;
 			}
 		}
 	}
-
-	if(min > max){
-		return "";
-	} else if(min == max){
-		return to_string(min);
-	} else {
-		return (to_string(min) + " to " + to_string(max));
-	}
-
+	return printRange(min, max, leaf->getKey());
 }
 
 void printRotate(int r, Tree* t){
 	vector<Node*> leaves;
+	vector<string> ranges;
 	findTallLeaf(t->getRoot(), leaves);
-	string rotateRanges = "";
+	string addedString = "";
 	
 	// tree is balanced -> no rotations
 	if(!leaves.empty()){
@@ -177,20 +217,24 @@ void printRotate(int r, Tree* t){
 			}
 		}
 		for(pair<Node*, Node*> p : unbalancedPairs){
-			if (rotateRanges != ""){
-				rotateRanges+=", ";
-			}
-
+			Node* unbalanced = p.first;
 			Node* leaf = p.second;
-			rotateRanges += getRotateRange(r, leaf, t);
+			addedString = getRotateRange(r, leaf, unbalanced, t);
+			if(addedString != "") {
+				ranges.push_back(addedString);
+			}
 		}
 	}
 
-	if(rotateRanges == ""){
+	if(ranges.size() == 0){
 		cout << "No inserts would cause a " << rotateTypeString(r) << " rotation." << endl << endl;
 	} else {
 		cout << "The following inserts would cause a "<< rotateTypeString(r) << " rotation:" << endl;
-		cout << rotateRanges << endl << endl;
+		for(size_t i = 0; i < ranges.size(); i++) {
+			if(i > 0) cout << ", ";
+			cout << ranges[i];
+		}
+		cout << endl << endl;
 	}
 
 }

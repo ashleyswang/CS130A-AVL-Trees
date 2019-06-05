@@ -1,0 +1,19 @@
+Added 5 of 5 nodes.
+Visited 6 (1.2) nodes and performed 0 (0) rotations.
+
+Node(5, h=2):
+  Leaf(2)
+  Node(8, h=1):
+    Leaf(7)
+    Leaf(12)
+
+No inserts would cause a left-left rotation.
+
+No inserts would cause a left-right rotation.
+
+The following inserts would cause a right-right rotation:
+9 to 11, 13 to 2147483647
+
+The following inserts would cause a right-left rotation:
+6
+

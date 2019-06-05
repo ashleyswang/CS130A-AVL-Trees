@@ -1,0 +1,27 @@
+Added 10 of 10 nodes.
+Visited 20 (2) nodes and performed 0 (0) rotations.
+
+Node(100, h=3):
+  Node(24, h=1):
+    Leaf(3)
+    Null
+  Node(505, h=2):
+    Node(300, h=1):
+      Leaf(200)
+      Leaf(302)
+    Node(1000, h=1):
+      Leaf(800)
+      Leaf(1200)
+
+The following inserts would cause a left-left rotation:
+-2147483648 to 2
+
+The following inserts would cause a left-right rotation:
+4 to 23
+
+The following inserts would cause a right-right rotation:
+506 to 799, 801 to 999, 1001 to 1199, 1201 to 2147483647
+
+The following inserts would cause a right-left rotation:
+101 to 199, 201 to 299, 301, 303 to 504
+

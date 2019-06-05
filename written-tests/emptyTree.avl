@@ -1,0 +1,6 @@
+lookup 72 8
+print tree
+print left-left
+print left-right
+print right-right
+print right-left

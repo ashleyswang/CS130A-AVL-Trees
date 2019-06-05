@@ -1,0 +1,7 @@
+insert 5 2 8 7 12
+print tree
+
+print left-left
+print left-right
+print right-right
+print right-left

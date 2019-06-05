@@ -1,0 +1,17 @@
+Added 4 of 4 nodes.
+Visited 4 (1) nodes and performed 0 (0) rotations.
+
+Node(2, h=2):
+  Leaf(1)
+  Node(4, h=1):
+    Leaf(3)
+    Null
+
+No inserts would cause a left-left rotation.
+
+No inserts would cause a left-right rotation.
+
+No inserts would cause a right-right rotation.
+
+No inserts would cause a right-left rotation.
+

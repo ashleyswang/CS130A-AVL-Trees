@@ -1,0 +1,82 @@
+Added 50 of 50 nodes.
+Visited 221 (4.42) nodes and performed 36 (0.72) rotations.
+
+Node(6767, h=6):
+  Node(3288, h=5):
+    Node(1507, h=4):
+      Node(883, h=3):
+        Node(144, h=2):
+          Node(136, h=1):
+            Leaf(68)
+            Null
+          Leaf(819)
+        Node(1056, h=1):
+          Leaf(944)
+          Leaf(1417)
+      Node(2026, h=2):
+        Leaf(1895)
+        Node(2241, h=1):
+          Null
+          Leaf(3171)
+    Node(5405, h=4):
+      Node(5081, h=3):
+        Node(4900, h=2):
+          Node(3313, h=1):
+            Null
+            Leaf(3810)
+          Leaf(5036)
+        Node(5097, h=1):
+          Null
+          Leaf(5125)
+      Node(5923, h=2):
+        Node(5528, h=1):
+          Leaf(5511)
+          Leaf(5770)
+        Node(6249, h=1):
+          Leaf(5946)
+          Leaf(6693)
+  Node(8551, h=4):
+    Node(7857, h=3):
+      Node(7166, h=2):
+        Leaf(6970)
+        Node(7646, h=1):
+          Leaf(7563)
+          Null
+      Node(8444, h=2):
+        Node(8243, h=1):
+          Leaf(8138)
+          Leaf(8324)
+        Node(8539, h=1):
+          Null
+          Leaf(8548)
+    Node(9148, h=3):
+      Node(9025, h=2):
+        Leaf(8837)
+        Node(9078, h=1):
+          Null
+          Leaf(9115)
+      Node(9903, h=1):
+        Leaf(9454)
+        Leaf(9915)
+
+The following inserts would cause a left-left rotation:
+-2147483648 to 67, 7167 to 7562
+
+The following inserts would cause a left-right rotation:
+69 to 135, 7564 to 7645
+
+The following inserts would cause a right-right rotation:
+3172 to 3287, 3811 to 4899, 5126 to 5404, 8549 to 8550, 9116 to 9147
+
+The following inserts would cause a right-left rotation:
+2242 to 3170, 3314 to 3809, 5098 to 5124, 8540 to 8547, 9079 to 9114
+
+Added 1 of 1 nodes.
+Visited 5 (5) nodes and performed 0 (0) rotations.
+
+The following inserts would cause a right-left rotation:
+2242 to 3170, 3314 to 3809, 5098 to 5124, 7167 to 7562, 7564 to 7645, 8540 to 8547, 9079 to 9114
+
+The following inserts would cause a right-right rotation:
+3172 to 3287, 3811 to 4899, 5126 to 5404, 7647, 7649 to 7856, 8549 to 8550, 9116 to 9147
+

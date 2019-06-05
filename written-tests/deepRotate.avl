@@ -1,0 +1,7 @@
+insert 50 20 80 70 120
+print tree
+
+print left-left
+print left-right
+print right-right
+print right-left

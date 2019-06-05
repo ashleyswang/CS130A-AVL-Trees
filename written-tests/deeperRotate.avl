@@ -1,0 +1,7 @@
+insert 100 24 505 3 300 1000 200 302 800 1200
+print tree
+
+print left-left
+print left-right
+print right-right
+print right-left
