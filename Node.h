@@ -43,6 +43,48 @@ class Node{
 			return rightHeight - leftHeight;
 		};
 
+		// for avl.cpp print functions		
+		bool isLeft(){
+			if(key < parent->getKey()){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		bool isTall(){
+
+			if (parent == nullptr){
+				return false;
+			}
+
+			int parentKey = parent->getKey();
+			Node* sibling;
+
+			// if only child of parent
+			if(parent->getLeft()==nullptr || parent->getRight()==nullptr){
+				return true;
+			}
+
+			// set sibling node
+			if(key < parentKey){
+				sibling = parent->getRight();
+			} else {
+				sibling = parent->getLeft();
+			}
+
+			// compare height with sibling
+			if (height > sibling->getHeight()){
+				return true;
+			} else if (height < sibling->getHeight()){
+				return false;
+			} else {
+				return parent->isTall();
+			}
+
+		}
+
+
 		// Modifier
 		void setKey(int key){ this->key = key; };
 		void setParent(Node* parent){ this->parent = parent; };

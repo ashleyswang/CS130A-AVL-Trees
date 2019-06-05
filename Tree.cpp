@@ -2,8 +2,6 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 Tree::Tree(){
 	root = nullptr;
 }
@@ -11,14 +9,6 @@ Tree::Tree(){
 Tree::~Tree(){
 	delete root;
 }
-
-// void Tree::ClearTree(Node* n){
-// 	if(n != nullptr){
-// 		ClearTree(n->getLeft());
-// 		ClearTree(n->getRight());
-// 		delete n;
-// 	}
-// }
 
 bool Tree::lookup(int key, int &visits){	
 	Node* currentNode = root;
@@ -185,29 +175,6 @@ void Tree::rotateRight(Node* n){
 	oldPivot->setHeight();
 	newPivot->setHeight();
 }
-
-// void Tree::rotateHeightAdjustment(Node* n){
-	
-// 	if(n->getLeft() != nullptr){
-// 		n->getLeft()->setHeight();
-// 	}
-// 	if(n->getRight() != nullptr){
-// 		n->getRight()->setHeight();
-// 	}
-
-// 	Node* currentNode = n;
-// 	while(currentNode != nullptr){
-// 		currentNode->setHeight();
-		
-// 		if(currentNode->getParent() != nullptr){
-// 			currentNode = currentNode->getParent();
-// 		} else {
-// 			root = currentNode;
-// 			break;
-// 		}
-// 	}
-
-// }
 
 void Tree::print(){
 	printTree(root, 0);

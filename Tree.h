@@ -14,15 +14,14 @@ class Tree{
 		bool lookup(int key, int &visits);
 		void print();
 
+		Node* getRoot(){ return root; };
+
 	private:
-		// Destructor helper function
-		void ClearTree(Node* n);
 
 		// Insert helper functions
 		void balanceTree(Node* n, int &rotations);
 		void rotateLeft(Node* n);
 		void rotateRight(Node* n);
-		// void rotateHeightAdjustment(Node* n);
 
 		// Print helper function
 		void printTree(Node* n, int indentCounter);

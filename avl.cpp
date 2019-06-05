@@ -1,4 +1,5 @@
 #include "Tree.h"
+#include "printFunctions.cpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -6,48 +7,6 @@
 #include <vector>
 
 using namespace std;
-
-void printInsert(vector<int>* v, Tree* t){
-	int visits=0;
-	int rotations=0;
-	int success=0;
-	int size=v->size();
-
-	for(int i=0; i<size; i++){
-
-		if(t->insert(v->at(i), visits, rotations)){
-			success++;
-			//cout << "** AFTER INSERTION " << v->at(i) <<" **" << endl;
-		}
-	}
-
-	cout << "Added " << success << " of " << size << " nodes." << endl;
-	cout << "Visited " << visits << " (" << (double(visits)/size)
-		<< ") nodes and performed " << rotations << " (" 
-		<< (double(rotations)/size) << ") rotations." << endl << endl;
-}
-
-void printLookup(vector<int>* v, Tree* t){
-	int visits=0;
-	int success=0;
-	int size=v->size();
-	string found = "";
-
-	for(int i=0; i<size; i++){
-
-		if(t->lookup(v->at(i), visits)){
-			if(found != ""){
-				found += ", ";
-			}
-			success++;
-			found += to_string(v->at(i));
-		}
-	}
-
-	cout << "Found " << success << " of " << size << " nodes: [" << found << "]"<< endl;
-	cout << "Visited " << visits << " (" << (double(visits)/size)
-		<< ") nodes and performed 0 (0) rotations." << endl << endl;
-}
 
 int main(int argc, char *argv[]){
 
@@ -94,16 +53,16 @@ int main(int argc, char *argv[]){
 				cout << endl;
 			}
 			else if(input == "left-left"){
-				// some function
+				printRotate(2, t);
 			}
 			else if(input == "left-right"){
-				// some function
+				printRotate(5, t);
 			}
 			else if(input == "right-left"){
-				// some function
+				printRotate(7, t);
 			}
 			else if(input == "right-right"){
-				// some function
+				printRotate(3, t);
 			}
 		}
 
