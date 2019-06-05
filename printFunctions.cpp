@@ -118,8 +118,8 @@ int rotateType(pair<Node*, Node*> nodePair){
 }
 
 string getRotateRange(int r, Node* leaf, Tree* t){
-	int min = INT_MIN;
-	int max = INT_MAX;
+	int min = -2147483648;
+	int max = 2147483647;
 
 	Node* currentNode = t->getRoot();
 
