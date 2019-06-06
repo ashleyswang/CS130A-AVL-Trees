@@ -1,0 +1,2 @@
+*.o
+written-tests/*.out
